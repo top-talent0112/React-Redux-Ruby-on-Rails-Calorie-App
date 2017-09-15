@@ -1,5 +1,7 @@
 module V1
   class ApiController < ApplicationController
+    include Swagger::Docs::ImpotentMethods
+    
     class << self
       Swagger::Docs::Generator::set_real_methods
 
