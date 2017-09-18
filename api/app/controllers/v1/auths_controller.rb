@@ -1,5 +1,7 @@
 module V1
   class AuthsController < ApiController
+    skip_before_action :authenticate_token!
+
     swagger_controller :users, "User Auth"
 
     swagger_api :sign_up do |api|
@@ -8,6 +10,7 @@ module V1
       param :form, :password, :string, :required
     end
     def sign_up
+      skip_authorization
       params.require([:email, :password])
       user = User.new(
         email:    params[:email],
@@ -26,6 +29,7 @@ module V1
       param :form, :password, :string, :required
     end
     def sign_in
+      skip_authorization
       params.require([:email, :password])
       user = User.find_for_authentication(email: params[:email])
       if user.present? && user.valid_password?(params[:password])
