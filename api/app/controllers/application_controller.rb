@@ -38,6 +38,11 @@ class ApplicationController < ActionController::API
   end
 
 
+  def render_pundit_error
+    render_error(:unauthorized, nil, "Not authorized to perform the action")
+  end
+
+
   def render_success(response)
     render json: response
   end
@@ -46,4 +51,14 @@ class ApplicationController < ActionController::API
     render status: status, json: {error_type: error_type, error_content: error_content}
   end
 
+
+  def paginate_info(collection)
+    {
+      per_page: collection.limit_value,
+      current_page: collection.current_page,
+      total_pages: collection.total_pages,
+      count: collection.count,
+      total_count: collection.total_count
+    }
+  end
 end

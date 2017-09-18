@@ -6,5 +6,7 @@ Rails.application.routes.draw do
       post  :sign_up
       post  :sign_in
     end
+
+    resources :users, only: [:index]
   end
 end
