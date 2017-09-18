@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include Pundit
 
   rescue_from ActionController::ParameterMissing, with: :render_parameter_missing_error
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
