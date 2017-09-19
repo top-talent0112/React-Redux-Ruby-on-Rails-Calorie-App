@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :validatable
 
   validates :name, presence: true
+  validates :calories, numericality: { only_integer: true, greater_than: 0, :allow_nil => true }
 
   enum role: {
     admin:        "admin",
