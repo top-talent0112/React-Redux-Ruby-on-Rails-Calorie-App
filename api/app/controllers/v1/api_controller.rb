@@ -14,7 +14,7 @@ module V1
 
       private
       def setup_basic_api_documentation
-        [:index, :show, :create, :update, :delete].each do |api_action|
+        [:index, :show, :create, :update, :destroy].each do |api_action|
           swagger_api api_action do
             param :header, 'Authorization', :string, :required, 'Authentication token'
           end

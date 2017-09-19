@@ -11,6 +11,7 @@ class ApplicationController < ActionController::API
   rescue_from ActionController::ParameterMissing, with: :render_parameter_missing_error
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
   rescue_from Pundit::NotAuthorizedError, with: :render_pundit_error
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 
 
   def auth_token
@@ -35,6 +36,10 @@ class ApplicationController < ActionController::API
 
   def render_unprocessable_entity_response(exception)
     render_error(:unprocessable_entity, "invalid record", exception.record.errors)
+  end
+
+  def render_not_found_response(exception)
+    render_error(:not_found, "record not found", nil)
   end
 
 

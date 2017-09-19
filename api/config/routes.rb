@@ -7,6 +7,6 @@ Rails.application.routes.draw do
       post  :sign_in
     end
 
-    resources :users, only: [:index]
+    resources :users, only: [:index, :show, :create, :update, :destroy]
   end
 end
