@@ -60,7 +60,7 @@ module V1
       @user.email = params[:email] if params[:email].present?
       @user.password = params[:password] if params[:password].present?
       @user.name = params[:name] if params[:name].present?
-      @user.save
+      @user.save!
       render_success(@user)
     end
 
