@@ -40,7 +40,7 @@ class Signin extends Component {
 
     return (
       <div>
-        <h2 className="text-center">Signin</h2>
+        <h2 className="text-center">Sign In</h2>
         <Row>
           <Col xs={4} xsOffset={4}>
             {error && <Alert bsStyle="danger">
@@ -64,7 +64,7 @@ class Signin extends Component {
                 component={InputField}
               />
               <div className="text-center">
-                <Button type="submit">Signin</Button>
+                <Button type="submit">Sign In</Button>
               </div>
             </Form>
           </Col>

@@ -16,11 +16,11 @@ export default () => (
       <Router>
         <div>
           <Header />
-          <Route path='/dashboard' exact component={Dashboard} />
-          <Route path='/signin' component={auth.isNotAuthenticated(Signin)} />
-          <Route path='/signup' component={auth.isNotAuthenticated(Signup)} />
-          <Route path='/meals' component={auth.isAuthenticated(Meals)} />
-          <Route path='/users' component={auth.isAuthenticated(auth.isNotRegular(Users))} />
+          <Route path='/' exact component={Dashboard} />
+          <Route path='/signin' component={auth.userIsNotAuthenticated(Signin)} />
+          <Route path='/signup' component={auth.userIsNotAuthenticated(Signup)} />
+          <Route path='/meals' component={auth.userIsAuthenticated(auth.userIsAdminOrRegular(Meals))} />
+          <Route path='/users' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(Users))} />
         </div>
       </Router>
     </div>

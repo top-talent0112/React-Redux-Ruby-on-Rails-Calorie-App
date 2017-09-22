@@ -7,41 +7,49 @@ import { pending } from '../redux/request'
 
 export const isAdmin = (profile) => profile.role === 'admin'
 export const isManager = (profile) => profile.role === 'user_manager'
-export const isUser = (profile) => profile.role === 'regular'
-export const canManageUsers = (profile) => isAdmin(profile) || isManager(profile)
+export const isRegular = (profile) => profile.role === 'regular'
 
 const locationHelper = locationHelperBuilder({})
 
 export const isSigningIn = state => pending(SIGNIN) === state.auth.status
 
-const isAuthenticatedDefaults = {
+const userIsAuthenticatedDefaults = {
   authenticatedSelector: state => state.auth.profile !== null,
   authenticatingSelector: state => isSigningIn(state),
-  wrapperDisplayName: 'isAuthenticated'
+  wrapperDisplayName: 'UserIsAuthenticated'
 }
 
-export const isAuthenticated = connectedRouterRedirect({
-  ...isAuthenticatedDefaults,
+export const userIsAuthenticated = connectedRouterRedirect({
+  ...userIsAuthenticatedDefaults,
   AuthenticatingComponent: (<div>Siging you in ...</div>),
   redirectPath: '/signin'
 })
 
-export const isNotRegular = connectedRouterRedirect({
-  redirectPath: '/dashboard',
+const userIsNotAuthenticatedDefaults = {
+  authenticatedSelector: state => state.auth.profile === null && !isSigningIn(state),
+  wrapperDisplayName: 'UserIsNotAuthenticated'
+}
+
+export const userIsNotAuthenticated = connectedRouterRedirect({
+  ...userIsNotAuthenticatedDefaults,
+  redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/',
+  allowRedirectBack: false
+})
+
+export const userIsAdminOrRegular = connectedRouterRedirect({
+  redirectPath: '/',
+  allowRedirectBack: false,
+  authenticatedSelector: state => state.auth.profile !== null &&
+    (isAdmin(state.auth.profile) || isRegular(state.auth.profile)),
+  predicate: user => isAdmin(user) || isRegular(user),
+  wrapperDisplayName: 'UserIsAdminOrRegular'
+})
+
+export const userIsAdminOrManager = connectedRouterRedirect({
+  redirectPath: '/',
   allowRedirectBack: false,
   authenticatedSelector: state => state.auth.profile !== null &&
     (isAdmin(state.auth.profile) || isManager(state.auth.profile)),
   predicate: user => isAdmin(user) || isManager(user),
-  wrapperDisplayName: 'isNotRegular'
-})
-
-const isNotAuthenticatedDefaults = {
-  authenticatedSelector: state => state.auth.profile === null && !isSigningIn(state),
-  wrapperDisplayName: 'isNotAuthenticated'
-}
-
-export const isNotAuthenticated = connectedRouterRedirect({
-  ...isNotAuthenticatedDefaults,
-  redirectPath: (state, ownProps) => locationHelper.getRedirectQueryParam(ownProps) || '/dashboard',
-  allowRedirectBack: false
+  wrapperDisplayName: 'UserIsAdminOrManager'
 })
