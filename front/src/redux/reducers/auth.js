@@ -1,7 +1,14 @@
 import * as cs from '../constants'
 import { success, failure } from '../request'
 
-const initialState = {
+
+const storageAuth = JSON.parse(localStorage.getItem('calories_auth') || null)
+const initialState = storageAuth ? {
+  token: storageAuth.token,
+  profile: storageAuth.profile,
+  status: 'INIT',
+  error: null
+} : {
   token: null,
   profile: null,
   status: 'INIT',
@@ -9,7 +16,6 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
-  console.log(action)
   switch (action.type) {
     case success(cs.SIGNIN):
       return {
