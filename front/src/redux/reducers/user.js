@@ -23,6 +23,7 @@ export default (state = initialState, action) => {
         status: success(cs.USERS_GET),
         users: action.payload.users,
         page_info: action.payload.paginate_info,
+        user: null,
         error: null
       };
 
@@ -32,6 +33,7 @@ export default (state = initialState, action) => {
         status: failure(cs.USERS_GET),
         users: [],
         page_info: initialState.page_info,
+        user: null,
         error: action.payload
       };
 

@@ -18,7 +18,34 @@ const user_delete = request({
   }
 })
 
+const user_get = request({
+  type: cs.USER_GET,
+  method: 'get',
+  path: ({payload}) => `/users/${payload.id}`,
+  onSuccess: (res, action) => {
+  }
+})
+
+const user_update = request({
+  type: cs.USER_UPDATE,
+  method: 'patch',
+  path: ({payload}) => `/users/${payload.id}`,
+  onSuccess: (res, action) => {
+  }
+})
+
+const user_create = request({
+  type: cs.USER_CREATE,
+  method: 'post',
+  path: () => `/users/`,
+  onSuccess: (res, action) => {
+  }
+})
+
 export default function* authSaga () {
   yield takeLatest(cs.USERS_GET, users_get)
   yield takeLatest(cs.USER_DELETE, user_delete)
+  yield takeLatest(cs.USER_GET, user_get)
+  yield takeLatest(cs.USER_UPDATE, user_update)
+  yield takeLatest(cs.USER_CREATE, user_create)
 }

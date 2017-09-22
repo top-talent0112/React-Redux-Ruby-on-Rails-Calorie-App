@@ -9,6 +9,8 @@ import Profile from './containers/profile'
 import Header from './containers/header'
 import Meals from './containers/meals'
 import Users from './containers/users'
+import UserEdit from './containers/user_edit'
+import UserNew from './containers/user_new'
 import * as auth from './helpers/auth'
 
 export default () => (
@@ -22,7 +24,9 @@ export default () => (
           <Route path='/signup' component={auth.userIsNotAuthenticated(Signup)} />
           <Route path='/profile' component={auth.userIsAuthenticated(Profile)} />
           <Route path='/meals' component={auth.userIsAuthenticated(auth.userIsAdminOrRegular(Meals))} />
-          <Route path='/users' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(Users))} />
+          <Route path='/users' exact component={auth.userIsAuthenticated(auth.userIsAdminOrManager(Users))} />
+          <Route path='/users/new' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(UserNew))} />
+          <Route path='/user/:id' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(UserEdit))} />
         </div>
       </Router>
     </div>

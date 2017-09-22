@@ -2,17 +2,23 @@ import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { compose } from "redux"
 import { connect } from "react-redux"
-import { Field, reduxForm } from "redux-form"
+import { Field, reduxForm, getFormValues } from "redux-form"
 import { Alert, Row, Col, Button, Form } from "react-bootstrap"
 import { withRouter } from "react-router"
 import { validateEmail } from "../helpers"
 import InputField from "../components/input-field"
-import { signup } from "../redux/actions"
+import { user_get, user_update } from "../redux/actions"
 
 const isRequired = (value) => (value === undefined || value === "") && "Required"
 const isValidEmail = (value) => !validateEmail(value) && "Not Email Format"
+const isPositiveInteger = (value) => value <= 0 && "Not Positive Number"
 
-class Signup extends Component {
+const roleOptions = [
+  { value: "regular", label: "Regular" },
+  { value: "user_manager", label: "Manager" }
+]
+
+class UserEdit extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -22,25 +28,33 @@ class Signup extends Component {
 
   static propsTypes = {
     handleSubmit: PropTypes.func,
-    signup: PropTypes.func,
+    user_get: PropTypes.func,
+    user_update: PropTypes.func,
     history: PropTypes.object
-  };
+  }
+
+  componentWillMount() {
+    const { user_get, match: { params }} = this.props
+    params.id && user_get({id: params.id})
+  }
 
   submit = (values) => {
-    const { history, signup } = this.props
-    signup({
+    const { history, user_update, match: { params } } = this.props
+    user_update({
+      id: params.id,
       body: values,
+      onSuccess: () => history.push("/users"),
       onFailure: ({ data }) => this.setState({ error: data })
     })
   }
 
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit, userStore, formValues } = this.props
     const { error } = this.state
 
     return (
       <div>
-        <h2 className="text-center">Welcome!!!</h2>
+        <h2 className="text-center">Update User</h2>
         <Row>
           <Col xs={4} xsOffset={4}>
             <Form onSubmit={handleSubmit(this.submit)}>
@@ -53,21 +67,6 @@ class Signup extends Component {
                 component={InputField}
               />
               <Field
-                name="password"
-                label="Password"
-                type="password"
-                placeholder="Password"
-                validate={isRequired}
-                component={InputField}
-              />
-              <Field
-                name="password_confirm"
-                label="Confirm Password"
-                type="password"
-                placeholder="Confirm Password"
-                component={InputField}
-              />
-              <Field
                 name="name"
                 label="Name"
                 type="text"
@@ -75,8 +74,25 @@ class Signup extends Component {
                 validate={isRequired}
                 component={InputField}
               />
+              <Field
+                name="role"
+                label="Role"
+                componentClass="select"
+                placeholder="Role"
+                validate={isRequired}
+                component={InputField}
+                options={roleOptions}
+              />
+              {formValues && formValues.role === "regular" && <Field
+                name="calories"
+                label="Expected Calories"
+                type="number"
+                placeholder="Expected Calories"
+                validate={isPositiveInteger}
+                component={InputField}
+              />}
               <div className="text-center">
-                <Button type="submit">Sign Up</Button>
+                <Button type="submit">Update</Button>
               </div>
             </Form>
             <br />
@@ -93,22 +109,20 @@ class Signup extends Component {
 }
 
 const mapDispatchToProps = {
-  signup
+  user_get,
+  user_update
 }
 
-const validate = (values) => {
-  const errors = {}
-  if (values.password !== values.password_confirm) {
-    errors.password_confirm = "Password does not match"
-  }
-  return errors
-}
+const mapStateToProps = (state) => ({
+  userStore: state.user,
+  initialValues: state.user.user,
+  formValues: getFormValues("userEditForm")(state),
+})
 
 export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: "signupForm",
-    validate
+    form: "userEditForm"
   }),
-  withRouter,
-  connect(null, mapDispatchToProps)
-)(Signup)
+  withRouter
+)(UserEdit)

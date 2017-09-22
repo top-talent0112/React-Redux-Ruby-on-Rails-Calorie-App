@@ -1,16 +1,16 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
-import { Alert, Row, Col, Button, Form } from 'react-bootstrap'
-import { withRouter } from 'react-router'
-import { validateEmail } from '../helpers'
-import InputField from '../components/input-field'
-import { signin } from '../redux/actions'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { compose } from "redux"
+import { connect } from "react-redux"
+import { Field, reduxForm } from "redux-form"
+import { Alert, Row, Col, Button, Form } from "react-bootstrap"
+import { withRouter } from "react-router"
+import { validateEmail } from "../helpers"
+import InputField from "../components/input-field"
+import { signin } from "../redux/actions"
 
-const isRequired = (value) => value === undefined && `Required`
-const isValidEmail = (value) => !validateEmail(value) && 'Not Email Format'
+const isRequired = (value) => (value === undefined || value === "") && "Required"
+const isValidEmail = (value) => !validateEmail(value) && "Not Email Format"
 
 class Signin extends Component {
   constructor(props) {
@@ -81,7 +81,7 @@ const mapDispatchToProps = {
 
 export default compose(
   reduxForm({
-    form: 'signinForm'
+    form: "signinForm"
   }),
   withRouter,
   connect(null, mapDispatchToProps)

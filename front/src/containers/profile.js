@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { Field, reduxForm } from 'redux-form'
-import { Alert, Row, Col, Button, Form } from 'react-bootstrap'
-import { withRouter } from 'react-router'
-import { validateEmail } from '../helpers'
-import InputField from '../components/input-field'
-import { profile } from '../redux/actions'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { compose } from "redux"
+import { connect } from "react-redux"
+import { Field, reduxForm } from "redux-form"
+import { Alert, Row, Col, Button, Form } from "react-bootstrap"
+import { withRouter } from "react-router"
+import { validateEmail } from "../helpers"
+import InputField from "../components/input-field"
+import { profile } from "../redux/actions"
 
-const isRequired = (value) => value === undefined && `Required`
-const isValidEmail = (value) => !validateEmail(value) && 'Not Email Format'
-const isPositiveInteger = (value) => value <= 0 && 'Not Positive Number'
+const isRequired = (value) => (value === undefined || value === "") && "Required"
+const isValidEmail = (value) => !validateEmail(value) && "Not Email Format"
+const isPositiveInteger = (value) => value <= 0 && "Not Positive Number"
 
 class Profile extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class Profile extends Component {
     const { history, profile } = this.props
     profile({
       body: values,
-      onSuccess: () => history.push('/'),
+      onSuccess: () => history.push("/"),
       onFailure: ({ data }) => this.setState({ error: data })
     })
   }
@@ -114,7 +114,7 @@ const mapStateToProps = (state) => ({
 const validate = (values) => {
   const errors = {}
   if (values.password !== values.password_confirm) {
-    errors.password_confirm = 'Password does not match'
+    errors.password_confirm = "Password does not match"
   }
   return errors
 }
@@ -122,7 +122,7 @@ const validate = (values) => {
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: 'profileForm',
+    form: "profileForm",
     validate
   }),
   withRouter

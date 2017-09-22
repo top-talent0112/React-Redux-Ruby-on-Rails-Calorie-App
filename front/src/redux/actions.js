@@ -32,3 +32,18 @@ export const user_delete = (payload) => ({
   type: cs.USER_DELETE,
   payload
 })
+
+export const user_get = (payload) => ({
+  type: cs.USER_GET,
+  payload
+})
+
+export const user_update = (payload) => ({
+  type: cs.USER_UPDATE,
+  payload
+})
+
+export const user_create = (payload) => ({
+  type: cs.USER_CREATE,
+  payload
+})

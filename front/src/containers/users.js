@@ -52,6 +52,16 @@ class Users extends Component {
     }
   }
 
+  editUser = (id) => {
+    const { history } = this.props
+    history.push('/user/'+id)
+  }
+
+  newUser = () => {
+    const { history } = this.props
+    history.push('/users/new')
+  }
+
   render() {
     const { userStore: { users, page_info } } = this.props
     const { error } = this.state
@@ -65,6 +75,10 @@ class Users extends Component {
         <h2 className="text-center">Users</h2>
         <Row>
           <Col xs={10} xsOffset={1}>
+            <div className="text-right">
+              <Button bsStyle="primary" onClick={this.newUser.bind(this)}>Create New User</Button>
+            </div>
+            <br/>
             <Table responsive bordered condensed striped>
               <thead>
                 <tr>
@@ -83,7 +97,7 @@ class Users extends Component {
                     <td className="text-center">{roleNames[user.role]}</td>
                     <td className="text-center">{user.role === "regular" && user.calories}</td>
                     <td className="text-center">
-                      <Button bsStyle="info">Edit</Button>
+                      <Button bsStyle="info" onClick={this.editUser.bind(this, user.id)}>Edit</Button>
                       &nbsp;
                       <Button bsStyle="danger" onClick={this.deleteUser.bind(this, user.id)}>Delete</Button>
                     </td>

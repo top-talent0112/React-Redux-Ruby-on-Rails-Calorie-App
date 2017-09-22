@@ -14,7 +14,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    (user.admin? || user.user_manager?) && (record.role == User.roles[:regular])
+    user.admin? || user.user_manager?
   end
 
   def create?
@@ -22,10 +22,10 @@ class UserPolicy < ApplicationPolicy
   end
 
   def update?
-    (user.admin? || user.user_manager?) && (record.role == User.roles[:regular])
+    user.admin? || user.user_manager?
   end
 
   def destroy?
-    (user.admin? || user.user_manager?) && (record.role == User.roles[:regular])
+    user.admin? || user.user_manager?
   end
 end

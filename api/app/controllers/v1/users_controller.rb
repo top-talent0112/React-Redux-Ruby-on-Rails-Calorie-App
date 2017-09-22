@@ -34,15 +34,16 @@ module V1
       param :form, :email, :string, :required
       param :form, :password, :string, :required
       param :form, :name, :string, :required
+      param :form, :role, :string, :required
       param :form, :calories, :integer, :optional
     end
     def create
-      params.require([:email, :password, :name])
+      params.require([:email, :password, :name, :role])
       user = User.new(
         email: params[:email],
         password: params[:password],
         name: params[:name],
-        role: User.roles[:regular],
+        role: params[:role],
         calories: params[:calories]
       )
       authorize user
@@ -55,12 +56,14 @@ module V1
       param :path, :id, :string, :required
       param :form, :email, :string, :optional
       param :form, :name, :string, :optional
+      param :form, :role, :string, :optional
       param :form, :calories, :integer, :optional
     end
     def update
       authorize @user
       @user.email = params[:email] if params[:email].present?
       @user.name = params[:name] if params[:name].present?
+      @user.role = params[:role] if params[:role].present?
       @user.calories = params[:calories] if params[:calories].present?
       @user.save!
       render_success(@user)
