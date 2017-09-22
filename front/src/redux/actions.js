@@ -22,3 +22,8 @@ export const profile = (payload) => ({
   type: cs.PROFILE,
   payload
 })
+
+export const users_get = (payload) => ({
+  type: cs.USERS_GET,
+  payload
+})

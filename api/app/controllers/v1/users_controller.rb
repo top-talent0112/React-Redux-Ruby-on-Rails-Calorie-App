@@ -13,7 +13,7 @@ module V1
       authorize User
       users = policy_scope(User)
         .page(params[:page] || 1)
-        .per(params[:per_page] || 20)
+        .per(params[:per_page] || 10)
       render_success(
         paginate_info: paginate_info(users),
         users: ActiveModel::Serializer::CollectionSerializer.new(users, serializer: UserSerializer)
@@ -73,7 +73,7 @@ module V1
     def destroy
       authorize @user
       @user.destroy
-      render_success(@user.destroyed?)
+      render_success(@user)
     end
 
     private
