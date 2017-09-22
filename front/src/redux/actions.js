@@ -27,3 +27,8 @@ export const users_get = (payload) => ({
   type: cs.USERS_GET,
   payload
 })
+
+export const user_delete = (payload) => ({
+  type: cs.USER_DELETE,
+  payload
+})

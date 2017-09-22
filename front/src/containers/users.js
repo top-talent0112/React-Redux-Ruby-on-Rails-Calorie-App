@@ -4,7 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Alert, Table, Row, Col, Button, Pagination } from 'react-bootstrap'
 import { withRouter } from 'react-router'
-import { users_get } from '../redux/actions'
+import { users_get, user_delete } from '../redux/actions'
 
 class Users extends Component {
   constructor(props) {
@@ -32,6 +32,24 @@ class Users extends Component {
         page: pagination
       }
     }) 
+  }
+
+  deleteUser = (id) => {
+    const { user_delete, users_get, userStore: {page_info} } = this.props
+    if(window.confirm("Do you really want to delete the user?")) {
+      user_delete({
+        id: id,
+        onSuccess: ({ data }) => {
+          users_get({
+            params: {
+              per_page: page_info.per_page,
+              page: page_info.current_page
+            }
+          }) 
+        },
+        onFailure: ({ data }) => this.setState({ error: data })
+      })
+    }
   }
 
   render() {
@@ -67,7 +85,7 @@ class Users extends Component {
                     <td className="text-center">
                       <Button bsStyle="info">Edit</Button>
                       &nbsp;
-                      <Button bsStyle="danger">Delete</Button>
+                      <Button bsStyle="danger" onClick={this.deleteUser.bind(this, user.id)}>Delete</Button>
                     </td>
                   </tr>
                 ))}
@@ -86,7 +104,8 @@ class Users extends Component {
 }
 
 const mapDispatchToProps = {
-  users_get
+  users_get,
+  user_delete
 }
 
 const mapStateToProps = (state) => ({
