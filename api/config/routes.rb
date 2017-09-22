@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resource :auth, only: [] do
       post  :sign_up
       post  :sign_in
+      post  :me
     end
 
     resources :users, only: [:index, :show, :create, :update, :destroy]

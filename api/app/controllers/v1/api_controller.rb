@@ -12,6 +12,12 @@ module V1
         end
       end
 
+      def setup_authorization_header(api_action)
+        swagger_api api_action do
+          param :header, 'Authorization', :string, :required, 'Auth Token'
+        end
+      end
+
       private
       def setup_basic_api_documentation
         [:index, :show, :create, :update, :destroy].each do |api_action|
