@@ -17,3 +17,8 @@ export const signup = (payload) => ({
   type: cs.SIGNUP,
   payload
 })
+
+export const profile = (payload) => ({
+  type: cs.PROFILE,
+  payload
+})

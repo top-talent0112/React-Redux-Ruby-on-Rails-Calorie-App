@@ -5,6 +5,7 @@ import store from './redux/store'
 import Signin from './containers/signin'
 import Signup from './containers/signup'
 import Dashboard from './containers/dashboard'
+import Profile from './containers/profile'
 import Header from './containers/header'
 import Meals from './containers/meals'
 import Users from './containers/users'
@@ -19,6 +20,7 @@ export default () => (
           <Route path='/' exact component={Dashboard} />
           <Route path='/signin' component={auth.userIsNotAuthenticated(Signin)} />
           <Route path='/signup' component={auth.userIsNotAuthenticated(Signup)} />
+          <Route path='/profile' component={auth.userIsAuthenticated(Profile)} />
           <Route path='/meals' component={auth.userIsAuthenticated(auth.userIsAdminOrRegular(Meals))} />
           <Route path='/users' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(Users))} />
         </div>

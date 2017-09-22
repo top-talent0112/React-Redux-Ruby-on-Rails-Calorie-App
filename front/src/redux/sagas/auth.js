@@ -20,7 +20,16 @@ const signup = request({
   }
 })
 
+const profile = request({
+  type: cs.PROFILE,
+  method: 'post',
+  path: () => '/auth/me/',
+  onSuccess: (res, action) => {
+  }
+})
+
 export default function* authSaga () {
   yield takeLatest(cs.SIGNIN, signin)
   yield takeLatest(cs.SIGNUP, signup)
+  yield takeLatest(cs.PROFILE, profile)
 }

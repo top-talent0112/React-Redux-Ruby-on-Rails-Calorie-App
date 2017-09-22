@@ -60,7 +60,23 @@ export default (state = initialState, action) => {
         profile: null,
         error: action.payload
       };
+
+    case success(cs.PROFILE):
+      return {
+        ...state,
+        status: success(cs.PROFILE),
+        profile: action.payload,
+        error: null
+      }
+
+    case failure(cs.PROFILE):
+      return {
+        ...state,
+        status: failure(cs.PROFILE),
+        error: action.payload
+      }
+
     default:
-      return state;
+      return state
   }
 }
