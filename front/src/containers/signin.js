@@ -9,8 +9,8 @@ import { validateEmail } from '../helpers'
 import InputField from '../components/input-field'
 import { signin } from '../redux/actions'
 
-const isRequired = (value) => value === undefined && `This field is required`
-const isValidEmail = (value) => !validateEmail(value) && 'Email is not valid'
+const isRequired = (value) => value === undefined && `Required`
+const isValidEmail = (value) => !validateEmail(value) && 'Not Email Format'
 
 class Signin extends Component {
   constructor(props) {
@@ -40,12 +40,9 @@ class Signin extends Component {
 
     return (
       <div>
-        <h2 className="text-center">Sign In</h2>
+        <h2 className="text-center">Welcome!!!</h2>
         <Row>
           <Col xs={4} xsOffset={4}>
-            {error && <Alert bsStyle="danger">
-              {error.error_content}
-            </Alert>}
             <Form onSubmit={handleSubmit(this.submit)}>
               <Field
                 name="email"
@@ -67,6 +64,10 @@ class Signin extends Component {
                 <Button type="submit">Sign In</Button>
               </div>
             </Form>
+            <br />
+            {error && <Alert bsStyle="danger">
+              {error.error_content}
+            </Alert>}
           </Col>
         </Row>
       </div>
