@@ -5,7 +5,7 @@ import request from '../request'
 const signin = request({
   type: cs.SIGNIN,
   method: 'post',
-  path: () => '/auths/sign_in/',
+  path: () => '/auth/sign_in/',
   success: (res, action) => {
     localStorage.setItem('calories_auth', JSON.stringify(res.data))
   }
@@ -14,7 +14,7 @@ const signin = request({
 const signup = request({
   type: cs.SIGNUP,
   method: 'post',
-  path: () => '/auths/sign_up/',
+  path: () => '/auth/sign_up/',
   success: () => {
     localStorage.removeItem('calories_auth')
   },

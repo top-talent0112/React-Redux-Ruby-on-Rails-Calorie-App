@@ -1,3 +1,4 @@
-export const pending = type => `${type}_PENDING`
-export const success = type => `${type}_SUCCESS`
-export const failure = type => `${type}_FAILURE`
+export const validateEmail = (email) => {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(email)
+}

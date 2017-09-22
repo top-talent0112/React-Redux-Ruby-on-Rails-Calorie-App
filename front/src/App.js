@@ -5,13 +5,15 @@ import store from './redux/store'
 import Signin from './containers/signin'
 import Signup from './containers/signup'
 import Dashboard from './containers/dashboard'
+import Header from './containers/header'
 
 export default () => (
   <Provider store={store}>
     <div style={{ height: '100%' }}>
       <Router>
         <div>
-          <Route path='/' exact component={Dashboard} />
+          <Header />
+          <Route path='/dashboard' exact component={Dashboard} />
           <Route path='/signin' component={Signin} />
           <Route path='/signup' component={Signup} />
         </div>

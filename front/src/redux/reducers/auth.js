@@ -1,5 +1,5 @@
 import * as cs from '../constants'
-import { success, failure } from '../../helpers'
+import { success, failure } from '../request'
 
 const initialState = {
   token: null,
@@ -9,6 +9,7 @@ const initialState = {
 }
 
 export default (state = initialState, action) => {
+  console.log(action)
   switch (action.type) {
     case success(cs.SIGNIN):
       return {

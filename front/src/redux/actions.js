@@ -1,19 +1,19 @@
 import * as cs from './constants'
 
 export const signin = (payload) => ({
-  type: SIGNIN,
+  type: cs.SIGNIN,
   payload
 })
 
 export const signout = (payload) => {
   localStorage.removeItem('calories_auth')
   return {
-    type: SIGNOUT,
+    type: cs.SIGNOUT,
     payload
   }
 }
 
 export const signup = (payload) => ({
-  type: SIGNUP,
+  type: cs.SIGNUP,
   payload
 })
