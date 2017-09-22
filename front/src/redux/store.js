@@ -3,6 +3,7 @@ import { routerMiddleware } from 'react-router-redux'
 import createSagaMiddleware from 'redux-saga'
 import createHistory from 'history/createBrowserHistory'
 import rootReducer from './reducers'
+import sagas from './sagas'
 
 export const history = createHistory()
 
@@ -34,5 +35,7 @@ const store = createStore(
   initialState,
   composedEnhancers
 )
+
+sagaMiddleware.run(sagas)
 
 export default store
