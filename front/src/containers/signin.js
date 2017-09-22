@@ -30,7 +30,6 @@ class Signin extends Component {
     const { history, signin } = this.props
     signin({
       body: values,
-      onSuccess: () => history.push('/dashboard'),
       onFailure: ({ data }) => this.setState({ error: data })
     })
   }

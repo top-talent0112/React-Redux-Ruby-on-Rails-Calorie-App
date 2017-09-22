@@ -21,7 +21,7 @@ class Header extends React.Component {
 
     return (
       <div>
-        <Navbar inverse collapseOnSelect>
+        <Navbar inverse collapseOnSelect fluid>
           <Navbar.Header>
             <Navbar.Brand>
               <Link to="/">Calories Management System</Link>
@@ -38,7 +38,7 @@ class Header extends React.Component {
                 <Link to="/users" className="nav-link">Users</Link>
               </NavItem>
               <NavItem>
-                <Link to="/calories" className="nav-link">Calories</Link>
+                <Link to="/meals" className="nav-link">Meals</Link>
               </NavItem>
               <NavItem>
                 <Link to="/profile" className="nav-link">Profile</Link>
