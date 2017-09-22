@@ -19,8 +19,10 @@ module V1
       )
       user.save!
       user_json = UserSerializer.new(user).as_json
-      user_json[:token] = JwtHelper.encode(user_json)
-      render_success(user_json)
+      render_success({
+        profile: user_json,
+        token: JwtHelper.encode(user_json)
+      })
     end
 
     swagger_api :sign_in do |api|
@@ -34,8 +36,10 @@ module V1
       user = User.find_for_authentication(email: params[:email])
       if user.present? && user.valid_password?(params[:password])
         user_json = UserSerializer.new(user).as_json
-        user_json[:token] = JwtHelper.encode(user_json)
-        render_success(user_json)
+        render_success({
+          profile: user_json,
+          token: JwtHelper.encode(user_json)
+        })
       else
         render_error(:unauthorized, nil, "Invalid Email or Password")
       end

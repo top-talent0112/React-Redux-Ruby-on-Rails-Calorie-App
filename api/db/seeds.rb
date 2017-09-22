@@ -1,13 +1,21 @@
+def create_user(email, password, name, role)
+  user = User.create!(
+    email: email,
+    password: password,
+    name: name,
+    role: role
+  )
+end
 # Admins
-User.create!(email: "admin@calories.com", password: "password", name: "Administrator", role: User.roles[:admin])
+create_user("admin1@calories.com", "password", "Administrator",User.roles[:admin])
 
 # User Managers
-User.create!(email: "pep@calories.com", password: "password", name: "Pep Guardiola", role: User.roles[:user_manager])
-User.create!(email: "enrique@calories.com", password: "password", name: "Luis Enrique", role: User.roles[:user_manager])
+create_user("manager1@calories.com", "password", "Pep Guardiola", User.roles[:user_manager])
+create_user("manager2@calories.com", "password", "Luis Enrique", User.roles[:user_manager])
 
 # Users
-User.create!(email: "messi@calories.com", password: "password", name: "Lionel Messi", role: User.roles[:regular])
-User.create!(email: "suarez@calories.com", password: "password", name: "Luis Suarez", role: User.roles[:regular])
-User.create!(email: "iniesta@calories.com", password: "password", name: "Andres Iniesta", role: User.roles[:regular])
-User.create!(email: "bousquets@calories.com", password: "password", name: "Sergio Bousquets", role: User.roles[:regular])
-User.create!(email: "pique@calories.com", password: "password", name: "Gerard Pique", role: User.roles[:regular])
+create_user("player1@calories.com", "password", "Lionel Messi", User.roles[:regular])
+create_user("player2@calories.com", "password", "Luis Suarez", User.roles[:regular])
+create_user("player3@calories.com", "password", "Andres Iniesta", User.roles[:regular])
+create_user("player4@calories.com", "password", "Sergio Bousquets", User.roles[:regular])
+create_user("player5@calories.com", "password", "Gerard Pique", User.roles[:regular])
