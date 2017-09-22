@@ -61,6 +61,13 @@ class Signup extends Component {
                 component={InputField}
               />
               <Field
+                name="password_confirm"
+                label="Confirm Password"
+                type="password"
+                placeholder="Confirm Password"
+                component={InputField}
+              />
+              <Field
                 name="name"
                 label="Name"
                 type="text"
@@ -89,9 +96,18 @@ const mapDispatchToProps = {
   signup
 }
 
+const validate = (values) => {
+  const errors = {}
+  if (values.password !== values.password_confirm) {
+    errors.password_confirm = 'Password does not match'
+  }
+  return errors
+}
+
 export default compose(
   reduxForm({
-    form: 'signupForm'
+    form: 'signupForm',
+    validate
   }),
   withRouter,
   connect(null, mapDispatchToProps)
