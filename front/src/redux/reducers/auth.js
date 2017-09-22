@@ -46,7 +46,9 @@ export default (state = initialState, action) => {
     case success(cs.SIGNUP):
       return {
         ...state,
+        token: action.payload.token,
         status: success(cs.SIGNUP),
+        profile: action.payload.profile,
         error: null
       };
 

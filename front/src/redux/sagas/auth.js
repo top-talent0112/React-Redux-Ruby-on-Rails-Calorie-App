@@ -15,11 +15,8 @@ const signup = request({
   type: cs.SIGNUP,
   method: 'post',
   path: () => '/auth/sign_up/',
-  onSuccess: () => {
-    localStorage.removeItem('calories_auth')
-  },
-  onFailure: () => {
-    localStorage.removeItem('calories_auth')
+  onSuccess: (res, action) => {
+    localStorage.setItem('calories_auth', JSON.stringify(res.data))
   }
 })
 

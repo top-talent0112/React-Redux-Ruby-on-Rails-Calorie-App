@@ -8,13 +8,15 @@ module V1
       summary "Sign up with username and password"
       param :form, :email,    :string, :required
       param :form, :password, :string, :required
+      param :form, :name,    :string, :required
     end
     def sign_up
       skip_authorization
-      params.require([:email, :password])
+      params.require([:email, :password, :name])
       user = User.new(
         email:    params[:email],
         password: params[:password],
+        name:     params[:name],
         role:     User.roles[:regular]
       )
       user.save!
