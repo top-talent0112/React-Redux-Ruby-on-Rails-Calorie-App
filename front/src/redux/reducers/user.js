@@ -11,6 +11,7 @@ const initialState = {
     count: 0,
     total_count: 0
   },
+  regulars: [],
   user: null,
   error: null
 }
@@ -23,6 +24,7 @@ export default (state = initialState, action) => {
         status: success(cs.USERS_GET),
         users: action.payload.users,
         page_info: action.payload.paginate_info,
+        regulars: [],
         user: null,
         error: null
       };
@@ -33,6 +35,40 @@ export default (state = initialState, action) => {
         status: failure(cs.USERS_GET),
         users: [],
         page_info: initialState.page_info,
+        regulars: [],
+        user: null,
+        error: action.payload
+      };
+
+    case success(cs.REGULARS_GET):
+      return {
+        ...state,
+        status: success(cs.REGULARS_GET),
+        users: [],
+        page_info: initialState.page_info,
+        regulars: action.payload,
+        user: null,
+        error: null
+      };
+
+    case failure(cs.REGULARS_GET):
+      return {
+        ...state,
+        status: failure(cs.REGULARS_GET),
+        users: [],
+        page_info: initialState.page_info,
+        regulars: [],
+        user: null,
+        error: action.payload
+      };
+
+    case failure(cs.USERS_GET):
+      return {
+        ...state,
+        status: failure(cs.USERS_GET),
+        users: [],
+        page_info: initialState.page_info,
+        regulars: [],
         user: null,
         error: action.payload
       };

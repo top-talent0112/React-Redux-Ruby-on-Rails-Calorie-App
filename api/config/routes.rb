@@ -8,7 +8,9 @@ Rails.application.routes.draw do
       post  :me
     end
 
-    resources :users, only: [:index, :show, :create, :update, :destroy]
+    resources :users, only: [:index, :show, :create, :update, :destroy] do
+      get :regulars, on: :collection
+    end
 
     resources :meals, only: [:index, :show, :create, :update, :destroy]
   end

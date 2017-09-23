@@ -10,6 +10,14 @@ const users_get = request({
   }
 })
 
+const regulars_get = request({
+  type: cs.REGULARS_GET,
+  method: 'get',
+  path: () => '/users/regulars',
+  onSuccess: (res, action) => {
+  }
+})
+
 const user_delete = request({
   type: cs.USER_DELETE,
   method: 'delete',
@@ -44,6 +52,7 @@ const user_create = request({
 
 export default function* authSaga () {
   yield takeLatest(cs.USERS_GET, users_get)
+  yield takeLatest(cs.REGULARS_GET, regulars_get)
   yield takeLatest(cs.USER_DELETE, user_delete)
   yield takeLatest(cs.USER_GET, user_get)
   yield takeLatest(cs.USER_UPDATE, user_update)

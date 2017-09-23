@@ -13,6 +13,10 @@ class UserPolicy < ApplicationPolicy
     user.admin? || user.user_manager?
   end
 
+  def regulars?
+    user.admin? || user.user_manager?
+  end
+
   def show?
     user.admin? || user.user_manager?
   end

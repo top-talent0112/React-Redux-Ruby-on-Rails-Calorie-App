@@ -53,6 +53,11 @@ export const meals_get = (payload) => ({
   payload
 })
 
+export const regulars_get = (payload) => ({
+  type: cs.REGULARS_GET,
+  payload
+})
+
 export const meal_delete = (payload) => ({
   type: cs.MEAL_DELETE,
   payload

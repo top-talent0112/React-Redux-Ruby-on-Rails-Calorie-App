@@ -4,6 +4,7 @@ export const SIGNUP = 'SIGNUP'
 export const PROFILE = 'PROFILE'
 
 export const USERS_GET = 'USERS_GET'
+export const REGULARS_GET = 'REGULARS_GET'
 export const USER_GET = 'USER_GET'
 export const USER_CREATE = 'USER_CREATE'
 export const USER_UPDATE = 'USER_UPDATE'

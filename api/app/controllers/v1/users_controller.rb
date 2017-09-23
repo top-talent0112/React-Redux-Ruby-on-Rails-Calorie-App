@@ -20,6 +20,17 @@ module V1
       )
     end
 
+    swagger_api :regulars do |api|
+      summary "list regulars"
+    end
+    setup_authorization_header(:regulars)
+    def regulars
+      authorize User
+      regulars = policy_scope(User)
+        .where(role: User.roles[:regular])
+      render_success(regulars)
+    end
+
     swagger_api :show do |api|
       summary "get a user"
       param :path, :id, :string, :required

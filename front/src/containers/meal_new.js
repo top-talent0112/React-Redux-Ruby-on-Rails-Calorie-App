@@ -1,21 +1,21 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { compose } from "redux"
-import { connect } from "react-redux"
 import moment from "moment"
+import { connect } from "react-redux"
 import { Field, reduxForm, getFormValues } from "redux-form"
-import { Alert, Row, Col, Button, Form, Label } from "react-bootstrap"
+import { Alert, Row, Col, Button, Form } from "react-bootstrap"
 import { withRouter } from "react-router"
 import { validateEmail } from "../helpers"
 import InputField from "../components/input-field"
 import DateTimeField from "../components/datetime-field"
-import { meal_get, meal_update } from "../redux/actions"
+import { meal_create, regulars_get } from "../redux/actions"
 
 const isRequired = (value) => (value === undefined || value === "") && "Required"
 const isDateTime = (value) => !(moment(value).isValid()) && "Not DateTime Format"
 const isPositiveInteger = (value) => value <= 0 && "Not Positive Number"
 
-class MealEdit extends Component {
+class MealNew extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -25,20 +25,20 @@ class MealEdit extends Component {
 
   static propsTypes = {
     handleSubmit: PropTypes.func,
-    meal_get: PropTypes.func,
-    meal_update: PropTypes.func,
+    meal_create: PropTypes.func,
     history: PropTypes.object
   }
 
   componentWillMount() {
-    const { meal_get, match: { params }} = this.props
-    params.id && meal_get({id: params.id})
+    const { regulars_get, authStore: { profile } } = this.props
+    if(profile.role==="admin") {
+      regulars_get({})
+    }
   }
 
   submit = (values) => {
-    const { history, meal_update, match: { params } } = this.props
-    meal_update({
-      id: params.id,
+    const { history, meal_create } = this.props
+    meal_create({
       body: values,
       onSuccess: () => history.push("/meals"),
       onFailure: ({ data }) => this.setState({ error: data })
@@ -46,16 +46,29 @@ class MealEdit extends Component {
   }
 
   render() {
-    const { handleSubmit, mealStore: {meal}, authStore: {profile}, formValues } = this.props
+    const { handleSubmit, mealStore, formValues, userStore: { regulars }, authStore: { profile } } = this.props
     const { error } = this.state
 
+    let regularOptions = regulars.map((r) => ({
+      value: r.id,
+      label: r.email + " (" + r.name + ")"
+    }))
     return (
       <div>
-        <h2 className="text-center">Update Meal</h2>
+        <h2 className="text-center">Create New Meal</h2>
         <Row>
           <Col xs={4} xsOffset={4}>
             <Form onSubmit={handleSubmit(this.submit)}>
-              { profile.role === "admin" && meal && <h3>{meal.user.email} ({meal.user.name})</h3> }
+              { profile.role === "admin" && 
+              <Field
+                name="user"
+                label="User"
+                componentClass="select"
+                placeholder="User"
+                validate={isRequired}
+                component={InputField}
+                options={regularOptions}
+              /> }
               <Field
                 name="time"
                 label="Date Time"
@@ -84,7 +97,7 @@ class MealEdit extends Component {
                 component={InputField}
               />
               <div className="text-center">
-                <Button type="submit">Update</Button>
+                <Button type="submit">Create</Button>
               </div>
             </Form>
             <br />
@@ -101,21 +114,22 @@ class MealEdit extends Component {
 }
 
 const mapDispatchToProps = {
-  meal_get,
-  meal_update
+  meal_create,
+  regulars_get
 }
 
 const mapStateToProps = (state) => ({
   authStore: state.auth,
   mealStore: state.meal,
-  initialValues: state.meal.meal,
-  formValues: getFormValues("mealEditForm")(state),
+  userStore: state.user,
+  initialValues: state.auth.profile.role==="regular" ? {user:state.auth.profile.id} : {},
+  formValues: getFormValues("mealNewForm")(state),
 })
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
   reduxForm({
-    form: "mealEditForm"
+    form: "mealNewForm"
   }),
   withRouter
-)(MealEdit)
+)(MealNew)
