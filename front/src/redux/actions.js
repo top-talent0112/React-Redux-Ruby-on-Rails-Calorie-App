@@ -47,3 +47,28 @@ export const user_create = (payload) => ({
   type: cs.USER_CREATE,
   payload
 })
+
+export const meals_get = (payload) => ({
+  type: cs.MEALS_GET,
+  payload
+})
+
+export const meal_delete = (payload) => ({
+  type: cs.MEAL_DELETE,
+  payload
+})
+
+export const meal_get = (payload) => ({
+  type: cs.MEAL_GET,
+  payload
+})
+
+export const meal_update = (payload) => ({
+  type: cs.MEAL_UPDATE,
+  payload
+})
+
+export const meal_create = (payload) => ({
+  type: cs.MEAL_CREATE,
+  payload
+})

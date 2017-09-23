@@ -13,7 +13,7 @@ module V1
       authorize Meal
       meals = policy_scope(Meal)
         .page(params[:page] || 1)
-        .per(params[:per_page] || 20)
+        .per(params[:per_page] || 10)
       render_success(
         paginate_info: paginate_info(meals),
         meals: ActiveModel::Serializer::CollectionSerializer.new(meals, serializer: MealSerializer)

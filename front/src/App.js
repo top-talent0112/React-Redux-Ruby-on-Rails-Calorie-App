@@ -23,10 +23,10 @@ export default () => (
           <Route path='/signin' component={auth.userIsNotAuthenticated(Signin)} />
           <Route path='/signup' component={auth.userIsNotAuthenticated(Signup)} />
           <Route path='/profile' component={auth.userIsAuthenticated(Profile)} />
-          <Route path='/meals' component={auth.userIsAuthenticated(auth.userIsAdminOrRegular(Meals))} />
           <Route path='/users' exact component={auth.userIsAuthenticated(auth.userIsAdminOrManager(Users))} />
           <Route path='/users/new' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(UserNew))} />
           <Route path='/user/:id' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(UserEdit))} />
+          <Route path='/meals' component={auth.userIsAuthenticated(auth.userIsAdminOrRegular(Meals))} />
         </div>
       </Router>
     </div>
