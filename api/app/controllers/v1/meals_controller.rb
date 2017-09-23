@@ -33,7 +33,7 @@ module V1
       summary "create a meal"
       param :form, :user, :string, :optional
       param :form, :title, :string, :required
-      param :form, :time, :integer, :required
+      param :form, :time, :string, :required
       param :form, :calories, :integer, :required
     end
     def create
@@ -46,7 +46,7 @@ module V1
       meal = Meal.create!(
         user: current_user.admin? ? User.find(params[:user]) : current_user,
         title: params[:title],
-        time: DateTime.strptime(Integer(params[:time]).to_s,"%s"),
+        time: params[:time],
         calories: params[:calories]
       )
       render_success(meal)
@@ -58,13 +58,13 @@ module V1
       summary "update a meal"
       param :path, :id, :string, :required
       param :form, :title, :string, :optional
-      param :form, :time, :integer, :optional
+      param :form, :time, :string, :optional
       param :form, :calories, :integer, :optional
     end
     def update
       authorize @meal
       @meal.title = params[:title] if params[:title].present?
-      @meal.time = DateTime.strptime(Integer(params[:time]).to_s,"%s") if params[:time].present?
+      @meal.time = params[:time] if params[:time].present?
       @meal.calories = params[:calories] if params[:calories].present?
       @meal.save!
       render_success(@meal)

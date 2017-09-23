@@ -90,8 +90,8 @@ class Meals extends Component {
                 {meals && meals.map((meal, index) => (
                   <tr key={index}>
                     { authStore.profile.role==="admin" && <td className="text-center">{meal.user.email} ({meal.user.name})</td> }
-                    <td className="text-center">{meal.date}</td>
-                    <td className="text-center">{meal.time}</td>
+                    <td className="text-center">{meal.time.split(" ")[0]}</td>
+                    <td className="text-center">{meal.time.split(" ")[1]}</td>
                     <td className="text-center">{meal.title}</td>
                     <td className="text-center">{meal.calories}</td>
                     <td className="text-center">

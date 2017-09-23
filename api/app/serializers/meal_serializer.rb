@@ -1,12 +1,8 @@
 class MealSerializer < ActiveModel::Serializer
-  attributes :id, :title, :date, :time, :calories
+  attributes :id, :title, :time, :calories
   belongs_to :user
 
-  def date
-    object.time.strftime("%Y-%m-%d")
-  end
-
   def time
-    object.time.strftime("%H:%M:%S")
+    object.time.strftime("%Y-%m-%d %H:%M:%S")
   end
 end

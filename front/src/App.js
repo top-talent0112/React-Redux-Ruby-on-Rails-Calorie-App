@@ -8,6 +8,7 @@ import Dashboard from './containers/dashboard'
 import Profile from './containers/profile'
 import Header from './containers/header'
 import Meals from './containers/meals'
+import MealEdit from './containers/meal_edit'
 import Users from './containers/users'
 import UserEdit from './containers/user_edit'
 import UserNew from './containers/user_new'
@@ -27,6 +28,7 @@ export default () => (
           <Route path='/users/new' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(UserNew))} />
           <Route path='/user/:id' component={auth.userIsAuthenticated(auth.userIsAdminOrManager(UserEdit))} />
           <Route path='/meals' component={auth.userIsAuthenticated(auth.userIsAdminOrRegular(Meals))} />
+          <Route path='/meal/:id' component={auth.userIsAuthenticated(auth.userIsAdminOrRegular(MealEdit))} />
         </div>
       </Router>
     </div>
