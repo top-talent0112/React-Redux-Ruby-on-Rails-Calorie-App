@@ -31,7 +31,7 @@ def create_meal(user, title, time, calories)
 end
 
 i = 0
-50.times {
+10.times {
   create_meal(User.find_by(email: "player1@calories.com"), "Breakfast", (Time.now.utc-i.days).change({hour:7, min:0, sec:0}), rand(50)+100)
   create_meal(User.find_by(email: "player1@calories.com"), "Lunch", (Time.now.utc-i.days).change({hour:13, min:0, sec:0}), rand(50)+100)
   create_meal(User.find_by(email: "player1@calories.com"), "Dinner", (Time.now.utc-i.days).change({hour:19, min:0, sec:0}), rand(50)+100)
