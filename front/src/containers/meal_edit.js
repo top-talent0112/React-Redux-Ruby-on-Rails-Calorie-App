@@ -42,7 +42,6 @@ class MealEdit extends Component {
       body: values,
       onSuccess: () => {
         if(profile.role==="regular") {
-          console.log('asdfj')
           calories_today({})  
         }
         history.push("/meals")
