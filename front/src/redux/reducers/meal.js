@@ -12,6 +12,7 @@ const initialState = {
     total_count: 0
   },
   meal: null,
+  calories_today: 0,
   error: null
 }
 
@@ -98,6 +99,22 @@ export default (state = initialState, action) => {
         ...state,
         status: failure(cs.MEAL_DELETE),
         meal: null,
+        error: action.payload
+      };
+
+    case success(cs.CALORIES_TODAY):
+      return {
+        ...state,
+        status: success(cs.CALORIES_TODAY),
+        calories_today: action.payload.result,
+        error: null
+      };
+
+    case failure(cs.CALORIES_TODAY):
+      return {
+        ...state,
+        status: failure(cs.MEAL_DELETE),
+        calories_today: 0,
         error: action.payload
       };
 

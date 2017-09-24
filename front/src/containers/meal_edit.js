@@ -9,7 +9,7 @@ import { withRouter } from "react-router"
 import { validateEmail } from "../helpers"
 import InputField from "../components/input-field"
 import DateTimeField from "../components/datetime-field"
-import { meal_get, meal_update } from "../redux/actions"
+import { meal_get, meal_update, calories_today } from "../redux/actions"
 
 const isRequired = (value) => (value === undefined || value === "") && "Required"
 const isDateTime = (value) => !(moment(value).isValid()) && "Not DateTime Format"
@@ -36,11 +36,17 @@ class MealEdit extends Component {
   }
 
   submit = (values) => {
-    const { history, meal_update, match: { params } } = this.props
+    const { history, meal_update, calories_today, match: { params }, authStore: { profile } } = this.props
     meal_update({
       id: params.id,
       body: values,
-      onSuccess: () => history.push("/meals"),
+      onSuccess: () => {
+        if(profile.role==="regular") {
+          console.log('asdfj')
+          calories_today({})  
+        }
+        history.push("/meals")
+      },
       onFailure: ({ data }) => this.setState({ error: data })
     })
   }
@@ -102,7 +108,8 @@ class MealEdit extends Component {
 
 const mapDispatchToProps = {
   meal_get,
-  meal_update
+  meal_update,
+  calories_today
 }
 
 const mapStateToProps = (state) => ({

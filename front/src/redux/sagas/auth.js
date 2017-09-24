@@ -25,6 +25,9 @@ const profile = request({
   method: 'post',
   path: () => '/auth/me/',
   onSuccess: (res, action) => {
+    let storageAuth = JSON.parse(localStorage.getItem('calories_auth'))
+    storageAuth.profile = res.data
+    localStorage.setItem('calories_auth', JSON.stringify(storageAuth))
   }
 })
 

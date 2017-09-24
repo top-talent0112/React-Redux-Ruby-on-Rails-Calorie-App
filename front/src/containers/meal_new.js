@@ -9,7 +9,7 @@ import { withRouter } from "react-router"
 import { validateEmail } from "../helpers"
 import InputField from "../components/input-field"
 import DateTimeField from "../components/datetime-field"
-import { meal_create, regulars_get } from "../redux/actions"
+import { meal_create, regulars_get, calories_today } from "../redux/actions"
 
 const isRequired = (value) => (value === undefined || value === "") && "Required"
 const isDateTime = (value) => !(moment(value).isValid()) && "Not DateTime Format"
@@ -37,10 +37,13 @@ class MealNew extends Component {
   }
 
   submit = (values) => {
-    const { history, meal_create } = this.props
+    const { history, meal_create, calories_today } = this.props
     meal_create({
       body: values,
-      onSuccess: () => history.push("/meals"),
+      onSuccess: () => {
+        history.push("/meals")
+        calories_today({})
+      },
       onFailure: ({ data }) => this.setState({ error: data })
     })
   }
@@ -115,7 +118,8 @@ class MealNew extends Component {
 
 const mapDispatchToProps = {
   meal_create,
-  regulars_get
+  regulars_get,
+  calories_today
 }
 
 const mapStateToProps = (state) => ({

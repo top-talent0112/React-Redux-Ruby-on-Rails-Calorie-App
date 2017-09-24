@@ -77,3 +77,8 @@ export const meal_create = (payload) => ({
   type: cs.MEAL_CREATE,
   payload
 })
+
+export const calories_today = (payload) => ({
+  type: cs.CALORIES_TODAY,
+  payload
+})

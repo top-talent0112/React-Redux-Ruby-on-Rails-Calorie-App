@@ -7,7 +7,7 @@ import { Alert, Row, Col, Button, Form } from "react-bootstrap"
 import { withRouter } from "react-router"
 import { validateEmail } from "../helpers"
 import InputField from "../components/input-field"
-import { signin } from "../redux/actions"
+import { signin, calories_today } from "../redux/actions"
 
 const isRequired = (value) => (value === undefined || value === "") && "Required"
 const isValidEmail = (value) => !validateEmail(value) && "Not Email Format"
@@ -30,6 +30,7 @@ class Signin extends Component {
     const { history, signin } = this.props
     signin({
       body: values,
+      onSuccess: (() => calories_today({})),
       onFailure: ({ data }) => this.setState({ error: data })
     })
   }
@@ -76,7 +77,8 @@ class Signin extends Component {
 }
 
 const mapDispatchToProps = {
-  signin
+  signin,
+  calories_today
 }
 
 export default compose(
