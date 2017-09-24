@@ -12,6 +12,8 @@ Rails.application.routes.draw do
       get :regulars, on: :collection
     end
 
-    resources :meals, only: [:index, :show, :create, :update, :destroy]
+    resources :meals, only: [:index, :show, :create, :update, :destroy] do
+      get :calories_today, on: :collection
+    end
   end
 end

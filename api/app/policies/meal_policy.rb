@@ -15,6 +15,10 @@ class MealPolicy < ApplicationPolicy
     user.admin? || user.regular?
   end
 
+  def calories_today?
+    user.regular?
+  end
+
   def show?
     user.admin? || (user.regular? && record.user == user)
   end

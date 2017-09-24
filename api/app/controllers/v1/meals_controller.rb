@@ -32,6 +32,24 @@ module V1
       render_error(:bad_request, "invalid filter params", nil)
     end
 
+    swagger_api :calories_today do |api|
+      summary "get calories for today"
+    end
+    setup_authorization_header(:calories_today)
+    def calories_today
+      authorize Meal
+      meals = policy_scope(Meal)
+        .where("time>=?", Time.now.utc.change(hour:0, min:0, sec:0))
+        .where("time<=?", Time.now.utc.change(hour:23, min:59, sec:59))
+      calories = 0
+      meals.each do |meal|
+        calories = calories + meal.calories
+      end
+      render_success({
+        result: calories
+      })
+    end
+
     swagger_api :show do |api|
       summary "get a meal"
       param :path, :id, :string, :required
