@@ -2,9 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Alert, Table, Row, Col, Button, Pagination } from 'react-bootstrap'
+import moment from "moment"
+import { Field, reduxForm, getFormValues } from 'redux-form'
+import { Alert, Table, Row, Col, Button, Pagination, Form } from 'react-bootstrap'
 import { withRouter } from 'react-router'
 import { meals_get, meal_delete } from '../redux/actions'
+import DateTimeField from "../components/datetime-field"
+
+const isRequired = (value) => (value === undefined || value === "") && "Required"
+const isDate = (value) => value !== undefined && value !== "" && !(value instanceof moment) && "Not Date Format"
+const isTime = (value) => value !== undefined && value !== "" && !(value instanceof moment) && "Not Time Format"
 
 class Meals extends Component {
   constructor(props) {
@@ -16,6 +23,8 @@ class Meals extends Component {
 
   static propsTypes = {
     meals_get: PropTypes.func,
+    meal_delete: PropTypes.func,
+    handleSubmit: PropTypes.func,
     history: PropTypes.object
   };
 
@@ -25,12 +34,17 @@ class Meals extends Component {
   }
 
   selectPage = (pagination) => {
-    const { meals_get, mealStore: {page_info} } = this.props
+    const { meals_get, mealStore: {page_info}, filterFormValues } = this.props
+    const params = {
+      per_page: page_info.per_page,
+      page: pagination,
+      date_from: filterFormValues && filterFormValues.date_from ? filterFormValues.date_from.format("YYYY-MM-DD") : null,
+      date_to: filterFormValues && filterFormValues.date_to ? filterFormValues.date_to.format("YYYY-MM-DD") : null,
+      time_from: filterFormValues && filterFormValues.time_from ? filterFormValues.time_from.format("HH:mm:ss") : null,
+      time_to: filterFormValues && filterFormValues.time_to ? filterFormValues.time_to.format("HH:mm:ss") : null
+    }
     meals_get({
-      params: {
-        per_page: page_info.per_page,
-        page: pagination
-      }
+      params: params
     }) 
   }
 
@@ -62,10 +76,22 @@ class Meals extends Component {
     history.push('/meals/new')
   }
 
-  render() {
-    const { mealStore: { meals, page_info }, authStore } = this.props
-    const { error } = this.state
+  filterMeals = (values) => {
+    const { meals_get } = this.props
+    const params = {
+      date_from: values.date_from ? values.date_from.format("YYYY-MM-DD") : null,
+      date_to: values.date_to ? values.date_to.format("YYYY-MM-DD") : null,
+      time_from: values.time_from ? values.time_from.format("HH:mm:ss") : null,
+      time_to: values.time_to ? values.time_to.format("HH:mm:ss") : null
+    }
+    meals_get({
+      params: params
+    })
+  }
 
+  render() {
+    const { mealStore: { meals, page_info }, authStore, filterFormValues, handleSubmit } = this.props
+    const { error } = this.state
     return (
       <div>
         <h2 className="text-center">Meals</h2>
@@ -74,7 +100,48 @@ class Meals extends Component {
             <div className="text-right">
               <Button bsStyle="primary" onClick={this.newMeal.bind(this)}>Create New Meal</Button>
             </div>
-            <br/>
+            <Form inline onSubmit={handleSubmit(this.filterMeals)} style={{height: "85px"}}>
+              <Field
+                name="date_from"
+                dateFormat="YYYY-MM-DD"
+                timeFormat={false}
+                placeholder="Date From"
+                component={DateTimeField}
+                validate={[isDate]}
+                utc={true}
+              />
+              {' '}
+              <Field
+                name="date_to"
+                dateFormat="YYYY-MM-DD"
+                timeFormat={false}
+                placeholder="Date To"
+                component={DateTimeField}
+                validate={[isDate]}
+                utc={true}
+              />
+              {' '}
+              <Field
+                name="time_from"
+                dateFormat={false}
+                timeFormat="HH:mm:ss"
+                placeholder="Time From"
+                component={DateTimeField}
+                validate={[isTime]}
+                utc={true}
+              />
+              {' '}
+              <Field
+                name="time_to"
+                dateFormat={false}
+                timeFormat="HH:mm:ss"
+                placeholder="Time To"
+                component={DateTimeField}
+                validate={[isTime]}
+                utc={true}
+              />
+              <Button type="submit" className="pull-right" style={{marginTop:"20px"}}>Filter</Button>
+            </Form>
             <Table responsive bordered condensed striped>
               <thead>
                 <tr>
@@ -123,9 +190,14 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   mealStore: state.meal,
   authStore: state.auth,
+  filterFormValues: getFormValues("mealsFilterForm")(state)
 })
 
 export default compose(
   connect(mapStateToProps, mapDispatchToProps),
+  reduxForm({
+    form: "mealsFilterForm",
+    enableReinitialize: true
+  }),
   withRouter
 )(Meals)

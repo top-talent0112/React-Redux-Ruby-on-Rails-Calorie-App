@@ -8,16 +8,28 @@ module V1
       summary "list meals"
       param :query, :page, :integer, :optional
       param :query, :per_page, :integer, :optional
+      param :query, :date_from, :string, :optional
+      param :query, :date_to, :string, :optional
+      param :query, :time_from, :string, :optional
+      param :query, :time_to, :string, :optional
     end
     def index
       authorize Meal
       meals = policy_scope(Meal)
+      meals = meals.where("time>=?", DateTime.parse(params[:date_from])) if params[:date_from].present?
+      meals = meals.where("time<=?", DateTime.parse(params[:date_to]).change(hour: 23, min: 59, sec: 59)) if params[:date_to].present?
+      meals = meals.where("strftime('%H:%M:%S',time)>=?", params[:time_from]) if params[:time_from].present?
+      meals = meals.where("strftime('%H:%M:%S',time)<=?", params[:time_to]) if params[:time_to].present?
+      meals = meals
         .page(params[:page] || 1)
         .per(params[:per_page] || 10)
+        .order(time: :desc)
       render_success(
         paginate_info: paginate_info(meals),
         meals: ActiveModel::Serializer::CollectionSerializer.new(meals, serializer: MealSerializer)
       )
+    rescue ArgumentError => e
+      render_error(:bad_request, "invalid filter params", nil)
     end
 
     swagger_api :show do |api|
