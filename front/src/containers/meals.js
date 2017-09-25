@@ -6,7 +6,7 @@ import moment from "moment"
 import { Field, reduxForm, getFormValues } from 'redux-form'
 import { Alert, Table, Row, Col, Button, Pagination, Form } from 'react-bootstrap'
 import { withRouter } from 'react-router'
-import { meals_get, meal_delete } from '../redux/actions'
+import { meals_get, meal_delete, calories_today } from '../redux/actions'
 import DateTimeField from "../components/datetime-field"
 
 const isRequired = (value) => (value === undefined || value === "") && "Required"
@@ -49,7 +49,7 @@ class Meals extends Component {
   }
 
   deleteMeal = (id) => {
-    const { meal_delete, meals_get, mealStore: {page_info} } = this.props
+    const { meal_delete, meals_get, calories_today, mealStore: {page_info} } = this.props
     if(window.confirm("Do you really want to delete the meal?")) {
       meal_delete({
         id: id,
@@ -59,7 +59,8 @@ class Meals extends Component {
               per_page: page_info.per_page,
               page: page_info.current_page
             }
-          }) 
+          })
+          calories_today({})
         },
         onFailure: ({ data }) => this.setState({ error: data })
       })
@@ -184,7 +185,8 @@ class Meals extends Component {
 
 const mapDispatchToProps = {
   meals_get,
-  meal_delete
+  meal_delete,
+  calories_today
 }
 
 const mapStateToProps = (state) => ({
