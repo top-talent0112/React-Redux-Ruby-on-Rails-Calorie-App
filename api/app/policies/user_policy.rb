@@ -2,7 +2,7 @@ class UserPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.present? && (user.admin? || user.user_manager?)
-        scope.where(role: [User.roles[:regular], User.roles[:user_manager]])
+        scope.where(role: [User.roles[:regular], User.roles[:user_manager]]).where.not(id: user.id)
       else
         scope.where(id: -1)
       end
